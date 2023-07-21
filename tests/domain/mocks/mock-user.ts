@@ -1,4 +1,4 @@
-import { CreateUser } from "@/domain/use-cases";
+import { CreateUser } from "../use-cases";
 
 import { faker } from "@faker-js/faker";
 

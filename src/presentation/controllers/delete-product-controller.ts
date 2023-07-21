@@ -13,7 +13,7 @@ export class DeleteProductController implements Controller {
             const { authorization } = headers;
             /// validate token
             const jwtAdapter = new JwtAdapter();
-            var userId;
+            var userId=null;
             try {
                 userId = await jwtAdapter.verify(authorization).then((payload) => {
                     return payload.id;
@@ -27,6 +27,7 @@ export class DeleteProductController implements Controller {
             /// delete product
             await this.deleteProduct.perform({
                 id: Number(id),
+                userId:userId
             });
             return HttpHelper.DELETED();
         } catch (error) {

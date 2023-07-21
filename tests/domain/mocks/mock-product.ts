@@ -1,4 +1,4 @@
-import { CreateProduct } from "@/domain/use-cases";
+import { CreateProduct } from "../use-cases";
 
 import { faker } from "@faker-js/faker";
 

@@ -4,6 +4,7 @@ export interface DeleteProduct {
 export namespace DeleteProduct {
     export type Params = {
         id: number;
+        userId: number;
     };
     export type Result = {
         msg: String;
