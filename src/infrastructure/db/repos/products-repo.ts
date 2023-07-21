@@ -15,7 +15,7 @@ export class ProductRepo implements CreateProductRepo, DeleteProductRepo, GetUse
     DeleteProduct = async (params: DeleteProductRepo.Params): Promise<DeleteProductRepo.Result> => {
         const productCollection = prismaClient.getConnection().products;
         await productCollection.delete({
-            where: { id: params.id }
+            where: { id: params.id , userId: params.userId}
         });
         return {msg: 'product deleted'}}
 

@@ -4,6 +4,7 @@ export interface DeleteProductRepo {
 export namespace DeleteProductRepo {
     export type Params = {
         id: number;
+        userId: number;
     };
     export type Result = {
         msg: String;
