@@ -1,10 +1,13 @@
 import { sign, SignOptions } from 'jsonwebtoken';
+import { env } from 'node:process';
+
+/// get JWT_ACCESS_SECRET from env
+const secret = env.JWT_ACCESS_SECRET;
 
 export class JwtAdapter {
-    constructor(private readonly secret: string) {}
     sign = async (params: JwtAdapter.Params): Promise<JwtAdapter.Result> => {
         const { payload, options } = params;
-        const token = sign(payload, this.secret, options);
+        const token = sign(payload,secret!, options);
         return { token };
     }
 
@@ -12,7 +15,7 @@ export class JwtAdapter {
         return new Promise((resolve, reject) => {
             try {
                 token=token.replace('Bearer ', '');
-                const payload = sign(token, this.secret);
+                const payload = sign(token, secret!);
                 resolve(payload);
             } catch (error) {
                 reject(error);
