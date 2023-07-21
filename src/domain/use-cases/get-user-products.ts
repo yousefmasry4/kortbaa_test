@@ -5,8 +5,8 @@ export interface GetUserProducts {
 export namespace GetUserProducts {
     export type Params = {
         userId: number;
-        page: number;
-        limit: number;
+        skip: number;
+        take: number;
     };
     export type Result = {
         products: object[];

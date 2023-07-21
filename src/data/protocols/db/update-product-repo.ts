@@ -9,6 +9,7 @@ export namespace UpdateProductRepo {
         price?: number;
         image?: string;
         userId?: number;
+        id: number;
     };
     export type Result = {
         product?: ProductsModel;
