@@ -11,6 +11,7 @@ export class JwtAdapter {
     verify = async (token: string): Promise<any> => {
         return new Promise((resolve, reject) => {
             try {
+                token=token.replace('Bearer ', '');
                 const payload = sign(token, this.secret);
                 resolve(payload);
             } catch (error) {
