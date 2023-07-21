@@ -5,5 +5,4 @@ export type ProductsModel = {
     image: string;
     createdAt: Date;
     updatedAt: Date;
-    userId: number;
 };
