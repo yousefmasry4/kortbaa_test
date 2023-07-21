@@ -1,8 +1,8 @@
 export type UserModel = {
     id: number;
     email: string;
+    password?: string;
     name: string;
-    products: object[];
     createdAt: Date;
     updatedAt: Date;
 };

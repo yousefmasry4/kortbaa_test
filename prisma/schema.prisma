@@ -12,6 +12,8 @@ model User {
   email     String   @unique
   name      String?
   products  products[] @relation("UserToProduct")
+  password  String
+  refreshTokens RefreshToken[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -26,4 +28,14 @@ model products {
   user      User     @relation("UserToProduct", fields: [userId], references: [id])
   userId    Int
 }
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 
