@@ -5,6 +5,5 @@ export type ProductsModel = {
     image: string;
     createdAt: Date;
     updatedAt: Date;
-    user: object;
     userId: number;
 };
