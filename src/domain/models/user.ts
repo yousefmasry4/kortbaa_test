@@ -1,13 +1,4 @@
-// model User {
-//     id        Int      @id @default(autoincrement())
-//     email     String   @unique
-//     name      String?
-//     products  products[] @relation("UserToProduct")
-//     createdAt DateTime @default(now())
-//     updatedAt DateTime @updatedAt
-//   }
-
-export type User = {
+export type UserModel = {
     id: number;
     email: string;
     name: string;
