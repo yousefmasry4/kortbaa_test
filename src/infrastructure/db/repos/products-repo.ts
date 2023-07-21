@@ -1,4 +1,4 @@
-import {CreateProductRepo, CreateUserRepo, DeleteProductRepo, GetUserProductsRepo, UpdateProductRepo } from "@/data/protocols";
+import {CreateProductRepo, DeleteProductRepo, GetUserProductsRepo, UpdateProductRepo } from "@/data/protocols";
 import { prismaClient } from "@/infrastructure/db";
 
 export class ProductRepo implements CreateProductRepo, DeleteProductRepo, GetUserProductsRepo, UpdateProductRepo {
