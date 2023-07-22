@@ -1,8 +1,7 @@
 import { Controller, HttpResponse } from "@/presentation/protocols";
 import { DeleteProduct } from "@/domain/use-cases";
 import { HttpHelper } from "@/presentation/helpers";
-import { MissingParametersError } from "@/presentation/errors";
-import { Validator } from "@/presentation/helpers";
+import { GenericError, MissingParametersError } from "@/presentation/errors";
 import {JwtAdapter} from '@/presentation/middelware';
 
 export class DeleteProductController implements Controller {
@@ -22,12 +21,12 @@ export class DeleteProductController implements Controller {
                 throw HttpHelper.UNAUTHORIZED();
             }
             if(!id) throw HttpHelper.BAD_REQUEST(new MissingParametersError());
-            /// validate id
-            if(!Validator.validateId(id)) throw HttpHelper.BAD_REQUEST(new Error('invalid id'));
             /// delete product
             await this.deleteProduct.perform({
                 id: Number(id),
                 userId:userId
+            }).catch((error) => {
+                throw HttpHelper.BAD_REQUEST(new GenericError('invalid id'));
             });
             return HttpHelper.DELETED();
         } catch (error) {

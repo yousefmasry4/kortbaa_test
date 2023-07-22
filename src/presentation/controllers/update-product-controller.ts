@@ -1,7 +1,7 @@
 import { Controller, HttpResponse } from "@/presentation/protocols";
 import { UpdateProduct } from "@/domain/use-cases";
 import { HttpHelper } from "@/presentation/helpers";
-import { MissingParametersError } from "@/presentation/errors";
+import { GenericError, MissingParametersError } from "@/presentation/errors";
 import { Validator } from "@/presentation/helpers";
 import {JwtAdapter} from '@/presentation/middelware';
 
@@ -21,11 +21,10 @@ export class UpdateProductController implements Controller {
             } catch (error) {
                 throw HttpHelper.UNAUTHORIZED();
             }
-            if(!id || !name || !image || !price ) throw HttpHelper.BAD_REQUEST(new MissingParametersError());
-            /// validate id
-            if(!Validator.validateId(id)) throw HttpHelper.BAD_REQUEST(new Error('invalid id'));
+            if(!id && !name && !image && !price ) throw HttpHelper.BAD_REQUEST(new MissingParametersError());
             /// validate price
-            if(!Validator.validatePrice(price)) throw HttpHelper.BAD_REQUEST(new Error('invalid price'));
+            console.log(price);
+            if(price!= undefined &&!Validator.validatePrice(price!)) throw HttpHelper.BAD_REQUEST(new GenericError('invalid price'));
             /// update product
             const product = await this.updateProduct.perform({
                 name,
@@ -33,10 +32,12 @@ export class UpdateProductController implements Controller {
                 image,
                 userId,
                 id: Number(id),
+            }).catch((error) => {
+                throw HttpHelper.BAD_REQUEST(new GenericError('invalid id'));
             });
             return HttpHelper.OK(product);
         } catch (error) {
-            if(error instanceof Error) return HttpHelper.BAD_REQUEST(error);
+            if(error == Error) return HttpHelper.BAD_REQUEST(error as Error);
             return error as HttpResponse<Error>;
         }
     }
@@ -44,7 +45,7 @@ export class UpdateProductController implements Controller {
 
 export namespace UpdateProductController {
     export type Request = {
-        id: string;
+        id: number;
         name?: string;
         price?: number;
         image?: string;

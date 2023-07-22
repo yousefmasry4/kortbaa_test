@@ -1,7 +1,7 @@
 import { Controller, HttpResponse } from "@/presentation/protocols";
 import { CreateProduct } from "@/domain/use-cases";
 import { HttpHelper } from "@/presentation/helpers";
-import { MissingParametersError } from "@/presentation/errors";
+import { GenericError, MissingParametersError } from "@/presentation/errors";
 import { Validator } from "@/presentation/helpers";
 import {JwtAdapter} from '@/presentation/middelware';
 
@@ -15,7 +15,7 @@ export class CreateProductController implements Controller {
             const jwtAdapter = new JwtAdapter();
             var userId;
             try {
-                userId = await jwtAdapter.verify(authorization).then((payload) => {
+                userId=await jwtAdapter.verify(authorization).then((payload) => {
                     return payload.id;
                 });
             } catch (error) {
@@ -23,17 +23,19 @@ export class CreateProductController implements Controller {
             }
             if(!name && !image && !price ) throw HttpHelper.BAD_REQUEST(new MissingParametersError());
             /// validate price
-            if(!Validator.validatePrice(price)) throw HttpHelper.BAD_REQUEST(new Error('invalid price'));
+            if(!Validator.validatePrice(price)) throw HttpHelper.BAD_REQUEST(new GenericError('invalid price'));
             /// create product
             const product = await this.createProduct.perform({
                 name,
                 price,
                 image,
                 userId
+            }).catch((error) => {
+                throw HttpHelper.INTERNAL_SERVER_ERROR(error);
             });
             return HttpHelper.CREATED(product);
         } catch (error) {
-            if(error instanceof Error) return HttpHelper.BAD_REQUEST(error);
+            if(error == Error) return HttpHelper.BAD_REQUEST(error as Error);
             return error as HttpResponse<Error>;
         }
     }

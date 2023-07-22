@@ -9,6 +9,7 @@ export class GetUserProductsController implements Controller {
         try {
             const { take,skip } = request;
             const { authorization } = headers;
+
             /// validate token
             const jwtAdapter = new JwtAdapter();
             var userId;
@@ -24,6 +25,8 @@ export class GetUserProductsController implements Controller {
                 userId: Number(userId),
                 skip: skip,
                 take: take,
+            }).catch((error) => {
+                throw HttpHelper.INTERNAL_SERVER_ERROR(error);
             });
             return HttpHelper.OK(products);
         } catch (error) {

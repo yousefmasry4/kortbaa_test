@@ -27,10 +27,6 @@
     "dev": "./node_modules/nodemon/bin/nodemon.js",
     "commit": "cz"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/souz4s/ts-clean-api.git"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",

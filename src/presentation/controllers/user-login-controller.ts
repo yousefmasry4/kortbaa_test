@@ -1,7 +1,7 @@
 import { Controller, HttpResponse } from "@/presentation/protocols";
 import { UserLogin } from "@/domain/use-cases";
 import { HttpHelper } from "@/presentation/helpers";
-import { MissingParametersError } from "@/presentation/errors";
+import { GenericError, MissingParametersError } from "@/presentation/errors";
 import { Validator } from "@/presentation/helpers";
 import {JwtAdapter} from '@/presentation/middelware';
 
@@ -11,12 +11,15 @@ export class UserLoginController implements Controller {
         try {
             const { email, password } = request;
             if(!email || !password) throw HttpHelper.BAD_REQUEST(new MissingParametersError());
-            if(!Validator.validateEmail(email)) throw HttpHelper.BAD_REQUEST(new Error('invalid email'));
+            if(!Validator.validateEmail(email)) throw HttpHelper.BAD_REQUEST(new GenericError('invalid email'));
             const user = await this.userLogin.perform({
                 email,
                 password
+            }).catch((error) => {
+                throw HttpHelper.INTERNAL_SERVER_ERROR(error);
             });
-            if(!user) throw HttpHelper.BAD_REQUEST(new Error('incorrect password or email does not exist'))
+            console.log(user);
+            if(!user.user) throw HttpHelper.BAD_REQUEST(new GenericError('incorrect password or email does not exist'))
             /// generate token
             const jwtAdapter = new JwtAdapter();
             const token = await jwtAdapter.sign({

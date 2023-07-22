@@ -1,6 +1,5 @@
 import { sign, SignOptions } from 'jsonwebtoken';
 import { env } from 'node:process';
-
 /// get JWT_ACCESS_SECRET from env
 const secret = env.JWT_ACCESS_SECRET;
 
@@ -15,8 +14,9 @@ export class JwtAdapter {
         return new Promise((resolve, reject) => {
             try {
                 token=token.replace('Bearer ', '');
-                const payload = sign(token, secret!);
-                resolve(payload);
+                const payload = JSON.parse(JSON.stringify(require('jsonwebtoken').verify(token, secret!)));
+                /// get data from payload
+                resolve(payload) as any;
             } catch (error) {
                 reject(error);
             }
