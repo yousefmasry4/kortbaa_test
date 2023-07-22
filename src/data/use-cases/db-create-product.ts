@@ -6,5 +6,5 @@ export class DbCreateProduct implements CreateProduct {
     perform = async (params: CreateProduct.Params): Promise<CreateProduct.Result> => {
         const product = await this.createProductRepo.CreateProduct(params);
         return product;
-    }
+}
 }

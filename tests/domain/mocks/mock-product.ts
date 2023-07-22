@@ -2,9 +2,20 @@ import { CreateProduct } from "../use-cases";
 
 import { faker } from "@faker-js/faker";
 
-export const mockCreateUserParams = (userId:number): CreateProduct.Params => ({
-    name: faker.commerce.productName(),
+export const mockCreateProductParams = (): CreateProduct.Params => ({
+    name: "name",
     price: 123,
-    userId: userId,
-    image: faker.image.imageUrl(),
+    userId: 1,
+    image: "url",
+});
+
+export const mockProduct = (): CreateProduct.Result => ({
+    product: {
+        id: 1,
+        name: "name",
+        price: 123,
+        image: "url",
+        createdAt: faker.date.past(),
+        updatedAt: faker.date.past(),
+    },
 });
